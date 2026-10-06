@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Album Cover Generator</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header class="top">
+      <div>
+        <h1>Album cover generator</h1>
+        <p>Retro records, labels and sleeves drawn from a song's title. Same song, same cover.</p>
+      </div>
+    </header>
+
+    <main class="editor">
+      <form class="controls" id="controls" autocomplete="off">
+        <label class="field wide">Song title<input name="title" value="Midnight Rain" maxlength="120" /></label>
+        <div class="field wide">
+          <span>Seed (the song's id)</span>
+          <div class="row"><input name="seed" value="take-1" /><button type="button" id="reroll" title="New random seed">🎲 Reroll</button></div>
+        </div>
+        <div class="field wide">
+          <span>Background image (optional): your artwork or an AI cover</span>
+          <div class="row">
+            <button type="button" id="chooseImage" class="ghost upload"><span aria-hidden="true">⬆</span> Choose image…</button>
+            <button type="button" id="clearImage" class="ghost" disabled>Clear</button>
+            <input type="file" id="imageFile" accept="image/*" hidden />
+          </div>
+          <small id="imageInfo">None: the label is drawn from its title and seed.</small>
+        </div>
+        <fieldset class="field wide segmented">
+          <legend>Shape</legend>
+          <label><input type="radio" name="shape" value="record" checked />Record</label>
+          <label><input type="radio" name="shape" value="cover" />Cover</label>
+          <label><input type="radio" name="shape" value="label" />Label</label>
+          <label><input type="radio" name="shape" value="sleeve" />Sleeve</label>
+        </fieldset>
+        <fieldset class="field wide segmented" id="centreField">
+          <legend>Centre hole</legend>
+          <label><input type="radio" name="centre" value="open" checked />Open</label>
+          <label><input type="radio" name="centre" value="vinyl" />Vinyl</label>
+        </fieldset>
+        <div class="field wide">
+          <span>Palette</span>
+          <div class="swatches" id="swatches"></div>
+        </div>
+        <div class="field wide">
+          <span>Ink colour</span>
+          <div class="swatches" id="inkSwatches"></div>
+          <small id="inkInfo">Auto: the ink that reads best.</small>
+        </div>
+        <label class="field">Theme<select name="theme"></select></label>
+        <label class="field">Emblem<select name="emblem"></select></label>
+        <label class="field">Background<select name="background"></select></label>
+        <label class="field">Scene<select name="scene"></select></label>
+        <label class="field wide">Texture <output id="textureValue">0.6</output><input type="range" name="texture" min="0" max="1" step="0.05" value="0.6" /></label>
+        <fieldset class="field wide checks" id="coverWearField">
+          <legend>Cover wear</legend>
+          <label class="check"><input type="checkbox" name="ringWear" checked />Ring wear</label>
+          <label class="check"><input type="checkbox" name="edgeWear" checked />Rubbed edges</label>
+        </fieldset>
+        <label class="field">Brand (your label's name)<input name="brand" placeholder="ZEON" maxlength="24" /></label>
+        <label class="field">Brand font<select name="brandFont"></select></label>
+        <label class="field">Text font<select name="textFont"></select></label>
+        <small class="field" id="fontInfo">Fonts embed in downloads.</small>
+        <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2" hidden />
+        <label class="field">Side<input name="side" placeholder="Side A" maxlength="12" /></label>
+        <label class="field">Top left<input name="stereo" placeholder="STEREO" maxlength="12" /></label>
+        <label class="field check"><input type="checkbox" name="uppercase" checked />Title in capitals</label>
+      </form>
+
+      <section class="preview">
+        <div class="stage" id="stage"></div>
+        <p class="why" id="why"></p>
+        <div class="export">
+          <label class="field">Size (px)<input type="number" name="exportSize" min="16" max="4096" step="1" value="3000" list="exportSizes" /></label>
+          <datalist id="exportSizes"></datalist>
+          <label class="field">Format<select name="exportType"><option value="image/png">PNG</option><option value="image/jpeg">JPEG (smaller, no transparency)</option></select></label>
+        </div>
+        <div class="actions">
+          <button type="button" id="png">Download</button>
+          <button type="button" id="svg" class="ghost">Download SVG</button>
+          <button type="button" id="json" class="ghost">Copy design JSON</button>
+        </div>
+        <a class="create-song" id="createSong" href="https://zeon.net/create" target="_blank" rel="noopener"><span aria-hidden="true">♪</span> Create a song for this album cover <span aria-hidden="true">→</span></a>
+      </section>
+    </main>
+
+    <section class="batch">
+      <div class="batch-head">
+        <h2>Random batch</h2>
+        <div class="row">
+          <label class="check"><input type="checkbox" id="batchMine" />Use my title</label>
+          <button type="button" id="newBatch">New batch</button>
+          <button type="button" id="exportFlags" class="ghost">Export flagged (0)</button>
+          <button type="button" id="clearFlags" class="ghost">Clear flags</button>
+        </div>
+      </div>
+      <p class="hint">Click a label to open it above. Flag (⚑) any that look wrong, then export the list so the rules can be tuned.</p>
+      <div class="grid" id="grid"></div>
+    </section>
+
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "name": "@zeon.net/album-cover-generator",
+  "version": "0.1.0",
+  "description": "Retro vinyl records, labels and album covers drawn as SVG from a song's title.",
+  "keywords": [
+    "album cover",
+    "cover art",
+    "vinyl",
+    "record label",
+    "svg",
+    "generative",
+    "retro"
+  ],
+  "license": "MIT",
+  "homepage": "https://album-cover-generator.zeon.net",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeon-net/album-cover-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zeon-net/album-cover-generator/issues"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "sideEffects": false,
+  "main": "./dist/album-cover-generator.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/album-cover-generator.js"
+    },
+    "./fonts/*": "./fonts/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "fonts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "vite --config demo/vite.config.ts",
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "build:demo": "vite build --config demo/vite.config.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run typecheck && npm run test && npm run build",
+    "prepublishOnly": "npm run check"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.3.3",
+    "vitest": "^5.0.3"
+  }
+}
