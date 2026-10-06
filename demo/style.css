@@ -28,6 +28,18 @@ input:focus, select:focus { border-color: var(--accent); }
 .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .row input { flex: 1; min-width: 0; }
 
+a.repo { display: inline-flex; align-items: center; gap: 8px; }
+.aside { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; min-width: 0; max-width: 100%; }
+.links { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+/* The header's text column may shrink below the install command, which then scrolls in its box on a phone. */
+.top > div { min-width: 0; }
+/* The text column takes the room the buttons leave, and its description wraps at a readable length. */
+.top > div:first-child { flex: 1; }
+.top p { max-width: 76ch; }
+.install { display: flex; width: fit-content; align-items: center; gap: 8px; padding: 4px 4px 4px 12px; max-width: 100%; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+.install code { min-width: 0; font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #dfe7f8; white-space: nowrap; overflow-x: auto; }
+.install .copy { padding: 4px 10px; font-size: 12px; flex: none; }
+a.repo:hover { border-color: var(--accent); color: #fff; }
 .top { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 
 .editor { display: grid; grid-template-columns: minmax(280px, 380px) minmax(0, 1fr); gap: 24px; padding: 24px; align-items: start; }
@@ -76,6 +88,13 @@ input[type='range'] { width: 100%; accent-color: var(--accent); }
 .card .flag { position: absolute; top: 6px; right: 6px; padding: 2px 7px; font-size: 12px; background: #0009; border: 1px solid var(--line); }
 .card.flagged .flag { background: var(--flag); border-color: var(--flag); }
 
+
+/* Below this the header no longer fits side by side (it wraps at about 1010 px): stack it in one left-aligned column. */
+@media (max-width: 1060px) {
+  .top { flex-direction: column; align-items: flex-start; }
+  .aside { align-items: flex-start; }
+  .links { justify-content: flex-start; }
+}
 
 @media (max-width: 760px) {
   .editor { grid-template-columns: 1fr; padding: 16px; }

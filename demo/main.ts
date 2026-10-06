@@ -401,6 +401,24 @@ fontFile.addEventListener('change', async () => {
   batch();
 });
 
+// The install tip copies its command.
+const copyInstall = document.querySelector<HTMLButtonElement>('#copyInstall')!;
+copyInstall.addEventListener('click', async () => {
+  const command = document.querySelector('#installCommand')!.textContent ?? '';
+  try {
+    await navigator.clipboard.writeText(command);
+    copyInstall.textContent = 'Copied';
+  } catch {
+    // Without clipboard access, select the command so it can be copied by hand.
+    const range = document.createRange();
+    range.selectNodeContents(document.querySelector('#installCommand')!);
+    getSelection()?.removeAllRanges();
+    getSelection()?.addRange(range);
+    copyInstall.textContent = 'Press ⌘C';
+  }
+  setTimeout(() => (copyInstall.textContent = 'Copy'), 1600);
+});
+
 // Open the label in the address, if any.
 const params = new URLSearchParams(location.hash.slice(1));
 if (params.get('title')) (form.elements.namedItem('title') as HTMLInputElement).value = params.get('title')!;

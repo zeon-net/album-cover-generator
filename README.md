@@ -158,6 +158,8 @@ The demo has every option, downloads at any size, and a random batch where you c
 
 The demo deploys to [album-cover-generator.zeon.net](https://album-cover-generator.zeon.net) from `main`, through `.github/workflows/pages.yml`. The workflow runs the full check first, so nothing ships if a test fails.
 
+**Social card:** `demo/public/og-image.jpg` is a 1200 × 630 screenshot of `demo/og.html`. To change it, run `npm run dev`, open `/og.html` (`?title=` and `?seed=` try other designs) in a 1200 × 630 window, and save a JPEG over it.
+
 **Releasing:** bump `version` in `package.json`, then publish a GitHub release tagged `v` plus that version (for example `v0.2.0`). `.github/workflows/publish.yml` checks the tag matches, runs the full check, and publishes to npm with provenance, through npm's trusted publishing.
 
 On npm 10.9, if installing Vitest fails with "Cannot read properties of null (reading 'edgesOut')", install it with `--legacy-peer-deps`.
