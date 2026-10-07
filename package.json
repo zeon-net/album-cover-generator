@@ -1,6 +1,6 @@
 {
   "name": "@zeon.net/album-cover-generator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Retro vinyl records, labels and album covers drawn as SVG from a song's title.",
   "keywords": [
     "album cover",
