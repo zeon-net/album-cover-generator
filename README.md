@@ -80,6 +80,8 @@ const { svg } = generateLabel({ title: 'I Am The One', seed: 'song-7', image: ar
 
 `readImage` also reports whether the image is dark or light at the top and bottom, which picks a cream or near-black ink.
 
+To show the image alone, print nothing over it: `brand: false` and an empty title (and no `stereo` or `side`). The fade is then left out too. Add `texture: 0`, `ringWear: false` and `edgeWear: false` for no grain or wear either.
+
 Use a data: URL, which `readImage` makes. An SVG drawn into a canvas can't fetch other addresses, so a plain URL only shows on a page.
 
 ## Fonts

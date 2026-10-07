@@ -119,17 +119,25 @@ function drawArt(drawing: Drawing, id: string, layout: Layout): { art: string; r
   const random = new Random(design.seed);
   const context = (part: string): DrawContext => ({ layout, random: random.fork(part), id, defs, colors: design.colors });
   const art = design.image
-    ? drawImage(design.image, design.colors.ink, id, layout, defs)
+    ? drawImage(design.image, design.colors.ink, id, layout, defs, printsText(design.text))
     : drawBackground(design.background, context('background')) + drawScene(design.scene, context('scene')) + drawEmblem(design.emblem, context('emblem'));
   defs.push(textureDefs(id, random.fork('texture'), design.texture));
   return { art, random };
 }
 
+/** Whether the design prints anything: the brand, the title or the small print. */
+function printsText(text: LabelDesign['text']): boolean {
+  return Boolean(text.brand || text.title.trim() || text.stereo || text.side);
+}
+
 /**
  * Given artwork, filling the square (cropped to fit, never stretched), with a soft fade behind the
- * brand at the top and the title at the bottom, so they read on any picture.
+ * brand at the top and the title at the bottom, so they read on any picture. With nothing printed
+ * over it, the artwork is drawn as it is.
  */
-function drawImage(image: NonNullable<LabelDesign['image']>, ink: string, id: string, layout: Layout, defs: string[]): string {
+function drawImage(image: NonNullable<LabelDesign['image']>, ink: string, id: string, layout: Layout, defs: string[], faded: boolean): string {
+  const picture = `<image href="${escapeXml(image.href)}" x="0" y="0" width="1000" height="1000" preserveAspectRatio="xMidYMid slice"/>`;
+  if (!faded) return picture;
   // The fade is the ink's opposite: dark behind light text, light behind dark text.
   const lightFade = isDark(ink);
   const fade = lightFade ? '#fff' : '#000';
@@ -140,10 +148,7 @@ function drawImage(image: NonNullable<LabelDesign['image']>, ink: string, id: st
       `<stop offset="0" stop-color="${fade}" stop-opacity="${strength}"/><stop offset="${clearFrom}" stop-color="${fade}" stop-opacity="0"/>` +
       `<stop offset="${clearTo}" stop-color="${fade}" stop-opacity="0"/><stop offset="1" stop-color="${fade}" stop-opacity="${strength}"/></linearGradient>`,
   );
-  return (
-    `<image href="${escapeXml(image.href)}" x="0" y="0" width="1000" height="1000" preserveAspectRatio="xMidYMid slice"/>` +
-    `<rect width="1000" height="1000" fill="url(#${id}-fade)"/>`
-  );
+  return picture + `<rect width="1000" height="1000" fill="url(#${id}-fade)"/>`;
 }
 
 function printed(id: string, strength: number, body: string): string {

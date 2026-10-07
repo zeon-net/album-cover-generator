@@ -170,6 +170,19 @@ describe('a label over given artwork', () => {
     expect(svg).toContain('>STEREO</text>');
   });
 
+  it('draws the image as it is when nothing is printed over it', () => {
+    for (const shape of ['record', 'label', 'cover', 'sleeve'] as const) {
+      const bare = generateLabel({ title: '', brand: false, seed: 1, image, shape }).svg;
+      expect(bare, shape).toContain(`<image href="${image}"`);
+      expect(bare, shape).not.toContain('-fade');
+      expect(bare, shape).not.toContain('<text');
+      expect(balanced(bare), shape).toBe(true);
+      // Any printing brings the fade back.
+      expect(generateLabel({ title: '', brand: 'ZEON', seed: 1, image, shape }).svg, shape).toContain('-fade');
+      expect(generateLabel({ title: '', brand: false, side: 'Side A', seed: 1, image, shape }).svg, shape).toContain('-fade');
+    }
+  });
+
   it('escapes the image address', () => {
     const { svg } = generateLabel({ title: 'x', seed: 1, image: 'https://example.com/a.png?w=1&h=1' });
     expect(svg).toContain('href="https://example.com/a.png?w=1&amp;h=1"');
